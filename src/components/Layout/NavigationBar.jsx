@@ -24,10 +24,10 @@ function NavigationBar({ pageTitle, authenticationButtonLabel }) {
         <h1 className="sr-only">{pageTitle}</h1>
       </Link>
       <div>
-        <a className="main-nav-item" href="./sign-in.html">
+        <Link className="main-nav-item" to="/login">
           <i className="fa fa-user-circle"></i>
           {authenticationButtonLabel}
-        </a>
+        </Link>
       </div>
     </nav>
   )

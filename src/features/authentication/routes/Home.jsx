@@ -1,5 +1,6 @@
 import NavigationBar from "../../../components/Layout/NavigationBar"
 import Footer from "../../../components/Layout/Footer"
+import Hero from "../components/Hero"
 
 function Home() {
   return (
@@ -8,6 +9,9 @@ function Home() {
         pageTitle="Argent Bank"
         authenticationButtonLabel="Sign In"
       />
+      <main>
+        <Hero />
+      </main>
       <Footer />
     </div>
   )

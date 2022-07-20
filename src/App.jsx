@@ -1,7 +1,13 @@
 import "./App.css"
+import AppProvider from "./providers/app"
+import AppRoutes from "./routes"
 
 function App() {
-  return <div className="App"></div>
+  return (
+    <AppProvider>
+      <AppRoutes />
+    </AppProvider>
+  )
 }
 
 export default App

@@ -1,18 +1,19 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
+
 import argentBankLogo from "../../assets/argentBankLogo.png"
+
 import "./NavigationBar.style.css"
 
 /**
- *
  * @param {Object} props
- * @param {String} props.pageTitle
- * @param {String} props.authenticationButtonLabel
+ * @param {String} props.appTitle
+ * @param {React.ReactNode} [props.children=null] Navigation links and/or user menu
  *
  * @returns {JSX.Element}
  */
-function NavigationBar({ pageTitle, authenticationButtonLabel }) {
+function NavigationBar({ appTitle, children }) {
   return (
     <nav className="main-nav">
       <Link className="main-nav-logo" to="/">
@@ -21,26 +22,21 @@ function NavigationBar({ pageTitle, authenticationButtonLabel }) {
           src={argentBankLogo}
           alt="Argent Bank Logo"
         />
-        <h1 className="sr-only">{pageTitle}</h1>
+        <h1 className="sr-only">{appTitle}</h1>
       </Link>
-      <div>
-        <Link className="main-nav-item" to="/login">
-          <i className="fa fa-user-circle"></i>
-          {authenticationButtonLabel}
-        </Link>
-      </div>
+      <div>{children}</div>
     </nav>
   )
 }
 
 NavigationBar.propTypes = {
-  pageTitle: PropTypes.string.isRequired,
-  authenticationButtonLabel: PropTypes.string.isRequired,
+  appTitle: PropTypes.string.isRequired,
+  children: PropTypes.node,
 }
 
 NavigationBar.defaultProps = {
-  pageTitle: "Page title",
-  authenticationButtonLabel: "Login or Logout button",
+  appTitle: "Page title",
+  children: null,
 }
 
 export default NavigationBar

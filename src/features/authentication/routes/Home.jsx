@@ -14,6 +14,8 @@ import "./Home.style.css"
  * @returns {JSX.Element}
  */
 function Home() {
+  document.title = "Argent Bank - Home"
+
   return (
     <div>
       <NavigationBar
@@ -28,7 +30,7 @@ function Home() {
             <Feature
               key={`feature-${index}`}
               icon={feature.icon}
-              iconAltText={feature.iconAltText}
+              iconAlternativeText={feature.iconAlternativeText}
               title={feature.title}
               description={feature.description}
             />

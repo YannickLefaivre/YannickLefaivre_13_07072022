@@ -24,7 +24,7 @@ function NavigationBar({ appTitle, children }) {
         />
         <h1 className="sr-only">{appTitle}</h1>
       </Link>
-      <div>{children}</div>
+      <div className="main-nav-item-container">{children}</div>
     </nav>
   )
 }

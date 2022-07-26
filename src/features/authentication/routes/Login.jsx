@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 
-import NavigationBar from "../../../components/Layout/NavigationBar"
-import Footer from "../../../components/Layout/Footer"
+import NavigationBar from "../../../component-library/Layout/NavigationBar"
+import Footer from "../../../component-library/Layout/Footer"
 
 import "./Login.style.css"
 

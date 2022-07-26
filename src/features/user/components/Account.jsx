@@ -38,4 +38,10 @@ Account.propTypes = {
   amountDescription: PropTypes.string.isRequired,
 }
 
+Account.defaultProps = {
+  title: "Account name",
+  amount: "$0",
+  amountDescription: "Balance state",
+}
+
 export default Account

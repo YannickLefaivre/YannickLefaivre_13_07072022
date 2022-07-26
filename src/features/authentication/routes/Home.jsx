@@ -1,12 +1,24 @@
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 
-import NavigationBar from "../../../components/Layout/NavigationBar"
-import Footer from "../../../components/Layout/Footer"
+import {
+  fetchOrUpdateFeatures,
+  selectFeatures,
+} from "../slices/features.slice"
+import { selectUser } from "../../user/slices/user.slice"
+
+import HomeData from "../data-formatters/HomeData"
+import UserData from "../../user/data-formatters/UserData"
+
+import NavigationBar from "../../../component-library/Layout/NavigationBar"
+import Footer from "../../../component-library/Layout/Footer"
+import LogoutForm from "../../../component-library/Form/LogoutForm"
+import Loader from "../../../component-library/DataFetchingStateIndicator/Error"
+import Error from "../../../component-library/DataFetchingStateIndicator/Loader"
 
 import Hero from "../components/Hero"
 import Feature from "../components/Feature"
-
-import { mockedFeatures } from "../../../__mocks__/features"
 
 import "./Home.style.css"
 
@@ -19,35 +31,86 @@ import "./Home.style.css"
  * @returns {JSX.Element}
  */
 function Home() {
+  let homeData = {}
+  let userData = {}
+
+  const dispatch = useDispatch()
+  const features = useSelector(selectFeatures)
+  const user = useSelector(selectUser)
+
+  const isLoading =
+    features.status === "pending" || features.status === "updating"
+
+  if (features.data) {
+    homeData = new HomeData(features.data)
+  }
+
+  if (user.data) {
+    userData = new UserData(user.data)
+  }
+
+  useEffect(() => {
+    dispatch(fetchOrUpdateFeatures)
+  }, [dispatch])
+
+  if (features.status === "rejected") {
+    return <Error type="Erreur" />
+  }
+
   document.title = "Argent Bank - Home"
 
   return (
     <>
-      <NavigationBar appTitle="Argent Bank">
-        <Link className="main-nav-item" to="/login">
-          <i className="fa fa-user-circle"></i>
-          Sign In
-        </Link>
-      </NavigationBar>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <NavigationBar appTitle="Argent Bank">
+            {user.data ? (
+              <>
+                {userData && (
+                  <Link
+                    className="main-nav-item margin-right-0-3rem"
+                    to="/profile"
+                  >
+                    <i className="fa fa-user-circle main-nav-item-icon"></i>
+                    {userData.firstName && userData.firstName}
+                  </Link>
+                )}
 
-      <main>
-        <Hero />
+                <LogoutForm />
+              </>
+            ) : (
+              <Link className="main-nav-item" to="/login">
+                <i className="fa fa-user-circle"></i>
+                Sign In
+              </Link>
+            )}
+          </NavigationBar>
 
-        <section className="features">
-          <h2 className="sr-only">Features</h2>
-          {mockedFeatures.map((feature, index) => (
-            <Feature
-              key={`feature-${index}`}
-              icon={feature.icon}
-              iconAlternativeText={feature.iconAlternativeText}
-              title={feature.title}
-              description={feature.description}
-            />
-          ))}
-        </section>
-      </main>
+          <main>
+            <Hero />
 
-      <Footer />
+            <section className="features">
+              <h2 className="sr-only">Features</h2>
+              {homeData.featuresData &&
+                homeData.featuresData.map((featureData, index) => (
+                  <Feature
+                    key={`feature-${index}`}
+                    icon={featureData.icon}
+                    iconAlternativeText={
+                      featureData.iconAlternativeText
+                    }
+                    title={featureData.title}
+                    description={featureData.description}
+                  />
+                ))}
+            </section>
+          </main>
+
+          <Footer />
+        </>
+      )}
     </>
   )
 }

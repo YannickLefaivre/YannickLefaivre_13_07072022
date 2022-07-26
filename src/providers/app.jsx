@@ -1,6 +1,9 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import { BrowserRouter } from "react-router-dom"
+import { Provider as ReduxStoreProvider } from "react-redux"
+
+import store from "../store/globalState"
 
 /**
  *
@@ -9,7 +12,11 @@ import { BrowserRouter } from "react-router-dom"
  * @returns {JSX.Element}
  */
 function AppProvider({ children }) {
-  return <BrowserRouter>{children}</BrowserRouter>
+  return (
+    <ReduxStoreProvider store={store}>
+      <BrowserRouter>{children}</BrowserRouter>
+    </ReduxStoreProvider>
+  )
 }
 
 AppProvider.propTypes = {

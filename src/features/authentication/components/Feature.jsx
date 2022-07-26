@@ -27,16 +27,16 @@ function Feature({ icon, iconAlternativeText, title, description }) {
 
 Feature.propTypes = {
   icon: PropTypes.string.isRequired,
-  titles: PropTypes.string.isRequired,
-  descriptions: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
 }
 
 Feature.defaultProps = {
   icon: "",
   iconAlternativeText:
     "Aucun chemin de fichier n'a été fournie au composant",
-  titles: "Feature title",
-  descriptions: "Feature description...",
+  title: "Feature title",
+  description: "Feature description...",
 }
 
 export default Feature

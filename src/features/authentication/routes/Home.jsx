@@ -1,8 +1,13 @@
+import { Link } from "react-router-dom"
+
 import NavigationBar from "../../../components/Layout/NavigationBar"
 import Footer from "../../../components/Layout/Footer"
+
 import Hero from "../components/Hero"
 import Feature from "../components/Feature"
+
 import { mockedFeatures } from "../../../__mocks__/features"
+
 import "./Home.style.css"
 
 /**
@@ -17,13 +22,17 @@ function Home() {
   document.title = "Argent Bank - Home"
 
   return (
-    <div>
-      <NavigationBar
-        pageTitle="Argent Bank"
-        authenticationButtonLabel="Sign In"
-      />
+    <>
+      <NavigationBar appTitle="Argent Bank">
+        <Link className="main-nav-item" to="/login">
+          <i className="fa fa-user-circle"></i>
+          Sign In
+        </Link>
+      </NavigationBar>
+
       <main>
         <Hero />
+
         <section className="features">
           <h2 className="sr-only">Features</h2>
           {mockedFeatures.map((feature, index) => (
@@ -37,8 +46,9 @@ function Home() {
           ))}
         </section>
       </main>
+
       <Footer />
-    </div>
+    </>
   )
 }
 

@@ -99,6 +99,10 @@ const authenticationSlice = createSlice({
         }
       },
     },
+    signout: (draft, action) => {
+      draft.data = null
+      draft.jsonWebToken = ""
+    },
   },
 })
 
@@ -198,5 +202,7 @@ export const signup = (newUser, navigationUtilities) => {
     }
   }
 }
+
+export const { signout } = authenticationSlice.actions
 
 export default authenticationSlice.reducer

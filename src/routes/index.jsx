@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom"
 
 import Home from "../features/authentication/routes/Home"
 import Login from "../features/authentication/routes/Login"
-import Profile from "../features/users/routes/Profile"
+import Profile from "../features/user/routes/Profile"
 
 import ProtectedRoutes from "./protected"
 

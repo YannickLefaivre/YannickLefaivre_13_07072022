@@ -1,0 +1,22 @@
+.Loader {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  animation: light-blink 1s ease-in-out 800ms infinite both alternate;
+}
+
+@keyframes light-blink {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.5;
+  }
+}

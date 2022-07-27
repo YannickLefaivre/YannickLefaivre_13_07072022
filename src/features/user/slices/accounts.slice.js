@@ -1,7 +1,7 @@
 import axios from "axios"
 import { createSlice } from "@reduxjs/toolkit"
 
-import { selectAuthentication } from "../../authentication/slices/authentication.slice"
+import { selectUser } from "../../user/slices/user.slice"
 
 const initialState = {
   status: "void",
@@ -70,10 +70,10 @@ const accountsSlice = createSlice({
 export const selectAccounts = (state) => state.accounts
 
 export const fetchOrUpdateAccounts = async (dispatch, getState) => {
-  const authentication = selectAuthentication(getState())
+  const user = selectUser(getState())
   const accounts = selectAccounts(getState())
 
-  if (authentication.jsonWebToken === undefined) {
+  if (user.jwt === undefined) {
     return
   }
 

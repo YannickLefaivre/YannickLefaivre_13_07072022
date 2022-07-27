@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom"
 import { useSelector } from "react-redux"
 
-import { selectAuthentication } from "../features/authentication/slices/authentication.slice"
+import { selectUser } from "../features/user/slices/user.slice"
 
 /**
  * @param {Object} props
@@ -11,9 +11,9 @@ import { selectAuthentication } from "../features/authentication/slices/authenti
  */
 function ProtectedRoutes({ children }) {
   const location = useLocation()
-  const auth = useSelector(selectAuthentication)
+  const auth = useSelector(selectUser)
 
-  if (!auth.jsonWebToken) {
+  if (!auth.jwt) {
     return <Navigate to="/login" state={{ from: location }} replace />
   }
 

@@ -5,10 +5,7 @@ import FormatString from "../../../utils/FormatString"
 import NavigationBar from "../../../component-library/Layout/NavigationBar"
 import Footer from "../../../component-library/Layout/Footer"
 
-import {
-  login,
-  selectAuthentication,
-} from "../slices/authentication.slice"
+import { login, selectUser } from "../../user/slices/user.slice"
 
 import "./Login.style.css"
 
@@ -20,7 +17,7 @@ function Login() {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const authentication = useSelector(selectAuthentication)
+  const user = useSelector(selectUser)
 
   /**
    * @param {SubmitEvent} event
@@ -104,10 +101,10 @@ function Login() {
               <p
                 id="password-error-message"
                 className={`error-message${
-                  authentication.passwordIsInvalid ? "" : " hide"
+                  user.passwordIsInvalid ? "" : " hide"
                 }`}
               >
-                {authentication.passwordIsInvalid
+                {user.passwordIsInvalid
                   ? "Le mot de passe que vous avez renseigné ne correspond pas au nom d'utilisateur entrer."
                   : ""}
               </p>

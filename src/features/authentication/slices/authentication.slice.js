@@ -13,7 +13,8 @@ import { API_BASE_URL } from "../../../config"
  * @property {String} status
  * @property {any} data
  * @property {Error} error
- * @property {String} jsonWebToken
+ * @property {Boolean} passwordIsInvalid
+ * @property {String} jwt
  */
 
 /**
@@ -37,7 +38,8 @@ const initialState = {
   status: "void",
   data: null,
   error: null,
-  jsonWebToken: "",
+  passwordIsInvalid: false,
+  jwt: "",
 }
 
 const authenticationSlice = createSlice({
@@ -99,6 +101,14 @@ const authenticationSlice = createSlice({
         }
       },
     },
+    passwordIsInvalid: {
+      prepare: (isUserPasswordValid) => {
+        return { payload: isUserPasswordValid }
+      },
+      reducer: (draft, action) => {
+        draft.passwordIsInvalid = action.payload
+      },
+    },
     signout: (draft, action) => {
       draft.data = null
       draft.jsonWebToken = ""
@@ -141,8 +151,8 @@ export const login = (registeredUser, navigationUtilities) => {
 
       const data = response.data
 
-      if (localStorage.getItem("passwordIsInvalid") === "true") {
-        localStorage.setItem("passwordIsInvalid", "false")
+      if (authentication.passwordIsInvalid === true) {
+        dispatch(authenticationSlice.actions.passwordIsInvalid(false))
       }
 
       dispatch(authenticationSlice.actions.resolved(data))
@@ -155,15 +165,15 @@ export const login = (registeredUser, navigationUtilities) => {
       const { message } = error.response.data
 
       if (message.toLowerCase().includes("user not found")) {
-        localStorage.setItem("passwordIsInvalid", "false")
-
         dispatch(signup(registeredUser, navigationUtilities))
       }
 
       if (message.toLowerCase().includes("password is invalid")) {
-        localStorage.setItem("passwordIsInvalid", "true")
+        dispatch(authenticationSlice.actions.passwordIsInvalid(true))
 
-        navigationUtilities.navigate(0)
+        dispatch(
+          authenticationSlice.actions.rejected(error.response.data)
+        )
       }
     }
   }
@@ -185,10 +195,6 @@ export const signup = (newUser, navigationUtilities) => {
         newUser
       )
       const data = response.data
-
-      if (localStorage.getItem("passwordIsInvalid") === "true") {
-        localStorage.setItem("passwordIsInvalid", "false")
-      }
 
       dispatch(authenticationSlice.actions.resolved(data))
 

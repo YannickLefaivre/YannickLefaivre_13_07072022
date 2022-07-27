@@ -1,10 +1,13 @@
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import NavigationBar from "../../../component-library/Layout/NavigationBar"
 import Footer from "../../../component-library/Layout/Footer"
 
-import { login } from "../slices/authentication.slice"
+import {
+  login,
+  selectAuthentication,
+} from "../slices/authentication.slice"
 
 import "./Login.style.css"
 
@@ -16,7 +19,7 @@ function Login() {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const passwordIsInvalid = localStorage.getItem("passwordIsInvalid")
+  const authentication = useSelector(selectAuthentication)
 
   const validateUsername = (username) => {
     const usernameRegex = /^[a-z]+\s[a-z]+$/i
@@ -131,13 +134,11 @@ function Login() {
               <p
                 id="password-error-message"
                 className={`error-message${
-                  passwordIsInvalid && passwordIsInvalid === "true"
-                    ? ""
-                    : " hide"
+                  authentication.passwordIsInvalid ? "" : " hide"
                 }`}
               >
-                {passwordIsInvalid && passwordIsInvalid === "true"
-                  ? "Le mot de passe que vous aviez renseigné ne correspond pas au nom d'utilisateur entrer."
+                {authentication.passwordIsInvalid
+                  ? "Le mot de passe que vous avez renseigné ne correspond pas au nom d'utilisateur entrer."
                   : ""}
               </p>
             </div>

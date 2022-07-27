@@ -1,0 +1,15 @@
+.not-found-page-layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+}
+
+.not-found-page-error-message {
+  margin-top: 3rem;
+}
+
+.not-found-page-redirect a {
+  font-weight: bold;
+  color: #2c3e50;
+}

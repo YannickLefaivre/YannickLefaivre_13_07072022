@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
+import FormatString from "../../../utils/FormatString"
 
 import NavigationBar from "../../../component-library/Layout/NavigationBar"
 import Footer from "../../../component-library/Layout/Footer"
@@ -21,30 +22,7 @@ function Login() {
 
   const authentication = useSelector(selectAuthentication)
 
-  const validateUsername = (username) => {
-    const usernameRegex = /^[a-z]+\s[a-z]+$/i
-
-    const hasValidUsername = usernameRegex.test(username)
-
-    const usernameErrorMessage = document.getElementById(
-      "username-error-message"
-    )
-
-    if (hasValidUsername) {
-      usernameErrorMessage.classList.add("hide")
-
-      return true
-    } else {
-      usernameErrorMessage.textContent = `Your first name must be separated from your last name by whitespace`
-
-      usernameErrorMessage.classList.remove("hide")
-
-      return false
-    }
-  }
-
   /**
-   *
    * @param {SubmitEvent} event
    * @param {import("@reduxjs/toolkit").Dispatch} dispatch
    * @param {import("react-router-dom").NavigateFunction} navigate
@@ -60,30 +38,22 @@ function Login() {
     const previousLocation =
       pathname === "/profile" ? pathname : "/profile"
 
-    const username = document.getElementById("username").value
+    const email = document.getElementById("username").value
     const password = document.getElementById("password").value
 
-    const isUsernameValid = validateUsername(username)
+    const getFirstName = () => email.split("@")[0]
+    const getLastName = () => email.split("@")[1].split(".")[0]
 
-    const getFirstName = () => username.split(" ")[0]
-    const getLastName = () => username.split(" ")[1]
-
-    let user = {}
-
-    if (isUsernameValid) {
-      user = {
-        email: `${getFirstName().toLowerCase()}@${getLastName().toLowerCase()}.com`,
-        password,
-        firstName: getFirstName(),
-        lastName: getLastName(),
-      }
-
-      dispatch(login(user, { navigate, previousLocation }))
-
-      return
-    } else {
-      return
+    const user = {
+      email,
+      password,
+      firstName: FormatString.firstLetterToUpperCase(getFirstName()),
+      lastName: FormatString.firstLetterToUpperCase(getLastName()),
     }
+
+    dispatch(login(user, { navigate, previousLocation }))
+
+    return
   }
 
   document.title = "Argent Bank - Login"
@@ -112,7 +82,7 @@ function Login() {
             <div className="input-wrapper">
               <label htmlFor="username">Username</label>
               <input
-                type="text"
+                type="email"
                 id="username"
                 name="username"
                 required

@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
 
 import * as userActions from "../../features/user/slices/user.slice"
-import * as accountsActions from "../../features/user/slices/accounts.slice"
 
 import Form from "./Form"
 
@@ -16,8 +15,6 @@ function LogoutForm() {
     dispatch(userActions.signout())
 
     localStorage.removeItem("jwt")
-
-    dispatch(accountsActions.signout())
 
     navigate("/")
   }

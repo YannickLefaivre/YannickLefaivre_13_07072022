@@ -1,5 +1,3 @@
-import Account from "./AccountData"
-
 class UserData {
   /**
    * @typedef {Object} CivilInformation
@@ -9,14 +7,10 @@ class UserData {
 
   /**
    * @param {CivilInformation} civilInformation
-   * @param {Account[] | []} accountsInformation
    */
-  constructor(civilInformation, accountsInformation = []) {
+  constructor(civilInformation) {
     this.firstName = civilInformation.firstName
     this.lastName = civilInformation.lastName
-    this.accounts = accountsInformation.map(
-      (account) => new Account(account) ?? []
-    )
   }
 }
 

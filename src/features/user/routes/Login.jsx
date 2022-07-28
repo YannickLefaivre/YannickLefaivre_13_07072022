@@ -1,12 +1,9 @@
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import FormatString from "../../../utils/FormatString"
-
 import NavigationBar from "../../../component-library/Layout/NavigationBar"
 import Footer from "../../../component-library/Layout/Footer"
-
-import { login, selectUser } from "../../user/slices/user.slice"
-
+import { login, selectUser } from "../slices/user.slice"
 import "./Login.style.css"
 
 /**
@@ -69,12 +66,10 @@ function Login() {
           Sign In
         </Link>
       </NavigationBar>
-
       <main className="main bg-dark">
         <section className="sign-in-content">
           <i className="fa fa-user-circle sign-in-icon"></i>
           <h1>Sign In</h1>
-
           <form
             id="sign-in-form"
             method="POST"
@@ -95,7 +90,6 @@ function Login() {
                 className="error-message hide"
               ></p>
             </div>
-
             <div className="input-wrapper">
               <label htmlFor="password">Password</label>
               <input
@@ -115,12 +109,10 @@ function Login() {
                   : ""}
               </p>
             </div>
-
             <div className="input-remember">
               <input type="checkbox" id="remember-me" />
               <label htmlFor="remember-me">Remember me</label>
             </div>
-
             <button type="submit" className="sign-in-button">
               Sign In
             </button>

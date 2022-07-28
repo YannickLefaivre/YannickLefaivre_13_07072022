@@ -5,6 +5,8 @@ import * as userActions from "../../features/user/slices/user.slice"
 
 import Form from "./Form"
 
+import "./LogoutForm.style.css"
+
 function LogoutForm() {
   const dispatch = useDispatch()
   const navigate = useNavigate()

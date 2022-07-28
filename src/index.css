@@ -28,6 +28,10 @@ body {
   background-color: #12002b;
 }
 
+.margin-right-0-3rem {
+  margin-right: 0.3rem;
+}
+
 .sr-only {
   border: 0 !important;
   clip: rect(1px, 1px, 1px, 1px) !important; /* 1 */

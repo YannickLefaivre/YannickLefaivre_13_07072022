@@ -59,7 +59,7 @@ function Login() {
     return
   }
 
-  document.title = "Argent Bank - Login"
+  document.title = "Argent Bank - Login Page"
 
   return (
     <>

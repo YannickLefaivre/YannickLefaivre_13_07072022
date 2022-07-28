@@ -1,7 +1,11 @@
-import { useSelector } from "react-redux"
-import { Link, useLocation } from "react-router-dom"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 
-import { selectUser } from "../../user/slices/user.slice"
+import {
+  fetchOrUpdateUser,
+  selectUser,
+} from "../../user/slices/user.slice"
 
 import UserData from "../../user/data-formatters/UserData"
 
@@ -18,7 +22,15 @@ import "./NotFound.style.css"
 function NotFound() {
   let userData = {}
 
+  const dispatch = useDispatch()
   const user = useSelector(selectUser)
+  const jwt = localStorage.getItem("jwt")
+
+  useEffect(() => {
+    if (jwt) {
+      dispatch(fetchOrUpdateUser)
+    }
+  }, [dispatch, jwt])
 
   if (user.data) {
     userData = new UserData(user.data)

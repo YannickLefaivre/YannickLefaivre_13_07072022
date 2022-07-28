@@ -1,24 +1,14 @@
 import { useEffect } from "react"
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-
 import { fetchOrUpdateUser, selectUser } from "../slices/user.slice"
-import {
-  fetchOrUpdateAccounts,
-  selectAccounts,
-} from "../slices/accounts.slice"
-
 import UserData from "../data-formatters/UserData"
-
 import NavigationBar from "../../../component-library/Layout/NavigationBar"
 import Footer from "../../../component-library/Layout/Footer"
 import LogoutForm from "../../../component-library/Form/LogoutForm"
-import Error from "../../../component-library/DataFetchingStateIndicator/Error"
 import Loader from "../../../component-library/DataFetchingStateIndicator/Loader"
-
+import Error from "../../../component-library/DataFetchingStateIndicator/Error"
 import MaintContentHeader from "../components/MainContentHeader"
-import Account from "../components/Account"
-
 import "./Profile.style.css"
 
 function Profile() {
@@ -26,27 +16,21 @@ function Profile() {
 
   const dispatch = useDispatch()
   const user = useSelector(selectUser)
-  const accounts = useSelector(selectAccounts)
 
   const isLoading =
-    user.status === "pending" ||
-    accounts.status === "pending" ||
-    user.status === "updating" ||
-    accounts.status === "updating"
+    user.status === "pending" || user.status === "updating"
 
-  if (user.data && accounts.data) {
-    userData = new UserData(user.data, accounts.data)
+  if (user.data) {
+    userData = new UserData(user.data)
   }
 
   useEffect(() => {
     dispatch(fetchOrUpdateUser)
-
-    dispatch(fetchOrUpdateAccounts)
   }, [dispatch])
 
-  document.title = `Argent Bank - Profile`
+  document.title = `Argent Bank - Profile Page`
 
-  if (user.status === "rejected" || accounts.status === "rejected") {
+  if (user.status === "rejected") {
     return <Error type="Erreur" />
   }
 
@@ -78,23 +62,58 @@ function Profile() {
               </Link>
             )}
           </NavigationBar>
-
           <main className="main bg-dark">
             <MaintContentHeader />
-
             <h2 className="sr-only">Accounts</h2>
-
-            {userData.accounts &&
-              userData.accounts.map((account) => (
-                <Account
-                  key={`account-${account.id}`}
-                  title={account.name}
-                  amount={account.amount}
-                  amountDescription={account.balance}
-                />
-              ))}
+            <section className="account">
+              <div className="account-content-wrapper">
+                <h3 className="account-title">
+                  Argent Bank Checking (x8349)
+                </h3>
+                <p className="account-amount">$2,082.79</p>
+                <p className="account-amount-description">
+                  Available Balance
+                </p>
+              </div>
+              <div className="account-content-wrapper cta">
+                <button className="transaction-button">
+                  View transactions
+                </button>
+              </div>
+            </section>
+            <section className="account">
+              <div className="account-content-wrapper">
+                <h3 className="account-title">
+                  Argent Bank Savings (x6712)
+                </h3>
+                <p className="account-amount">$10,928.42</p>
+                <p className="account-amount-description">
+                  Available Balance
+                </p>
+              </div>
+              <div className="account-content-wrapper cta">
+                <button className="transaction-button">
+                  View transactions
+                </button>
+              </div>
+            </section>
+            <section className="account">
+              <div className="account-content-wrapper">
+                <h3 className="account-title">
+                  Argent Bank Credit Card (x8349)
+                </h3>
+                <p className="account-amount">$184.30</p>
+                <p className="account-amount-description">
+                  Current Balance
+                </p>
+              </div>
+              <div className="account-content-wrapper cta">
+                <button className="transaction-button">
+                  View transactions
+                </button>
+              </div>
+            </section>
           </main>
-
           <Footer />
         </>
       )}

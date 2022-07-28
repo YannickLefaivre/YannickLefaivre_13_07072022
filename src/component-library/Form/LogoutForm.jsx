@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
 
-import * as authenticationActions from "../../features/authentication/slices/authentication.slice"
 import * as userActions from "../../features/user/slices/user.slice"
-import * as accountsActions from "../../features/user/slices/accounts.slice"
 
 import Form from "./Form"
+
+import "./LogoutForm.style.css"
 
 function LogoutForm() {
   const dispatch = useDispatch()
@@ -14,11 +14,9 @@ function LogoutForm() {
   const handleClickOnLogoutButton = (event) => {
     event.preventDefault()
 
-    dispatch(authenticationActions.signout())
-
     dispatch(userActions.signout())
 
-    dispatch(accountsActions.signout())
+    localStorage.removeItem("jwt")
 
     navigate("/")
   }

@@ -15,6 +15,8 @@ function LogoutForm() {
 
     dispatch(userActions.signout())
 
+    localStorage.removeItem("jwt")
+
     dispatch(accountsActions.signout())
 
     navigate("/")

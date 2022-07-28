@@ -37,9 +37,13 @@ function Login() {
 
     const email = document.getElementById("username").value
     const password = document.getElementById("password").value
+    const rememberMeOption = document.getElementById("remember-me")
 
     const getFirstName = () => email.split("@")[0]
     const getLastName = () => email.split("@")[1].split(".")[0]
+
+    const keepUserLoggedIn =
+      rememberMeOption.checked === true || false
 
     const user = {
       email,
@@ -48,7 +52,9 @@ function Login() {
       lastName: FormatString.firstLetterToUpperCase(getLastName()),
     }
 
-    dispatch(login(user, { navigate, previousLocation }))
+    dispatch(
+      login(user, { navigate, previousLocation }, keepUserLoggedIn)
+    )
 
     return
   }

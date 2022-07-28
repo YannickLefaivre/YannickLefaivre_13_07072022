@@ -6,7 +6,10 @@ import {
   fetchOrUpdateFeatures,
   selectFeatures,
 } from "../slices/features.slice"
-import { selectUser } from "../../user/slices/user.slice"
+import {
+  fetchOrUpdateUser,
+  selectUser,
+} from "../../user/slices/user.slice"
 
 import HomeData from "../data-formatters/HomeData"
 import UserData from "../../user/data-formatters/UserData"
@@ -14,8 +17,8 @@ import UserData from "../../user/data-formatters/UserData"
 import NavigationBar from "../../../component-library/Layout/NavigationBar"
 import Footer from "../../../component-library/Layout/Footer"
 import LogoutForm from "../../../component-library/Form/LogoutForm"
-import Loader from "../../../component-library/DataFetchingStateIndicator/Error"
-import Error from "../../../component-library/DataFetchingStateIndicator/Loader"
+import Loader from "../../../component-library/DataFetchingStateIndicator/Loader"
+import Error from "../../../component-library/DataFetchingStateIndicator/Error"
 
 import Hero from "../components/Hero"
 import Feature from "../components/Feature"
@@ -35,11 +38,25 @@ function Home() {
   let userData = {}
 
   const dispatch = useDispatch()
+
   const features = useSelector(selectFeatures)
   const user = useSelector(selectUser)
 
   const isLoading =
-    features.status === "pending" || features.status === "updating"
+    features.status === "pending" ||
+    user.status === "pending" ||
+    features.status === "updating" ||
+    user.status === "updating"
+
+  const jwt = localStorage.getItem("jwt")
+
+  useEffect(() => {
+    if (jwt) {
+      dispatch(fetchOrUpdateUser)
+    }
+
+    dispatch(fetchOrUpdateFeatures)
+  }, [dispatch, jwt])
 
   if (features.data) {
     homeData = new HomeData(features.data)
@@ -49,11 +66,11 @@ function Home() {
     userData = new UserData(user.data)
   }
 
-  useEffect(() => {
-    dispatch(fetchOrUpdateFeatures)
-  }, [dispatch])
-
-  if (features.status === "rejected") {
+  if (
+    (user.status === "rejected" &&
+      user.passwordIsInvalid === false) ||
+    features.status === "rejected"
+  ) {
     return <Error type="Erreur" />
   }
 

@@ -5,16 +5,15 @@ import { API_BASE_URL } from "../../../config"
 
 /**
  * @typedef {Object} ArgentBankAppState
- * @property {AuthenticationState} user
+ * @property {UserSlice} user
  */
 
 /**
- * @typedef {Object} AuthenticationState
+ * @typedef {Object} UserSlice
  * @property {String} status
  * @property {any} data
- * @property {Error} error
+ * @property {any} error
  * @property {Boolean} passwordIsInvalid
- * @property {String} jwt
  */
 
 /**
@@ -31,15 +30,11 @@ import { API_BASE_URL } from "../../../config"
  * @property {String} previousLocation
  */
 
-/**
- * @type {AuthenticationState}
- */
 const initialState = {
   status: "void",
   data: null,
   error: null,
   passwordIsInvalid: false,
-  jwt: "",
 }
 
 const userSlice = createSlice({
@@ -68,13 +63,14 @@ const userSlice = createSlice({
         return { payload: data }
       },
       reducer: (draft, action) => {
-        const data = action.payload
         if (
           draft.status === "pending" ||
           draft.status === "updating"
         ) {
-          if (data.body && data.body.token) {
-            draft.jwt = data.body.token
+          const data = action.payload
+
+          if (data.token) {
+            draft.jwt = data.token
           }
 
           draft.data = data.body ? data.body : data
@@ -111,7 +107,10 @@ const userSlice = createSlice({
     signout: (draft, action) => {
       draft.data = null
       draft.passwordIsInvalid = false
-      draft.jwt = ""
+
+      if (draft.jwt) {
+        draft.jwt = null
+      }
     },
   },
 })
@@ -120,10 +119,15 @@ const userSlice = createSlice({
  *
  * @param {User} registeredUser
  * @param {NavigationUtilities} navigationUtilities
+ * @param {Boolean} keepUserLoggedIn
  *
  * @returns {import("@reduxjs/toolkit").AsyncThunkAction}
  */
-export const login = (registeredUser, navigationUtilities) => {
+export const login = (
+  registeredUser,
+  navigationUtilities,
+  keepUserLoggedIn
+) => {
   return async (dispatch, getState) => {
     const user = selectUser(getState())
 
@@ -145,7 +149,11 @@ export const login = (registeredUser, navigationUtilities) => {
         dispatch(userSlice.actions.passwordIsInvalid(false))
       }
 
-      dispatch(userSlice.actions.resolved(data))
+      if (keepUserLoggedIn) {
+        localStorage.setItem("jwt", data.body.token)
+      }
+
+      dispatch(userSlice.actions.resolved(data.body))
 
       navigationUtilities.navigate(
         navigationUtilities.previousLocation,
@@ -159,6 +167,8 @@ export const login = (registeredUser, navigationUtilities) => {
       }
 
       if (message.toLowerCase().includes("password is invalid")) {
+        localStorage.removeItem("jwt")
+
         dispatch(userSlice.actions.passwordIsInvalid(true))
 
         dispatch(userSlice.actions.rejected(error.response.data))
@@ -198,16 +208,19 @@ export const signup = (newUser, navigationUtilities) => {
 /**
  * @param {ArgentBankAppState} state
  *
- * @returns {UserState}
+ * @returns {UserSlice}
  */
 export const selectUser = (state) => state.user
 
+/**
+ * @param {Function} dispatch
+ * @param {Function} getState
+ *
+ * @returns A async thunk action
+ */
 export const fetchOrUpdateUser = async (dispatch, getState) => {
   const user = selectUser(getState())
-
-  if (user.jwt === undefined) {
-    return
-  }
+  const jwt = user.jwt ?? localStorage.getItem("jwt")
 
   if (user.status === "pending" || user.status === "updating") {
     return
@@ -220,7 +233,7 @@ export const fetchOrUpdateUser = async (dispatch, getState) => {
       url: `${API_BASE_URL}user/profile`,
       method: "POST",
       headers: {
-        Authorization: `Bearer ${user.jwt}`,
+        Authorization: `Bearer ${jwt}`,
       },
     })
 
@@ -234,13 +247,16 @@ export const fetchOrUpdateUser = async (dispatch, getState) => {
   }
 }
 
+/**
+ *
+ * @param {String} newFirstName
+ * @param {String} newLastName
+ * @returns
+ */
 export const updateUserProfile = (newFirstName, newLastName) => {
   return async (dispatch, getState) => {
     const user = selectUser(getState())
-
-    if (user.jwt === undefined) {
-      return
-    }
+    const jwt = user.jwt ?? localStorage.getItem("jwt")
 
     if (user.status === "pending" || user.status === "updating") {
       return
@@ -251,7 +267,7 @@ export const updateUserProfile = (newFirstName, newLastName) => {
     try {
       const body = { firstName: newFirstName, lastName: newLastName }
       const headers = {
-        Authorization: `Bearer ${user.jwt}`,
+        Authorization: `Bearer ${jwt}`,
       }
 
       const response = await axios.put(

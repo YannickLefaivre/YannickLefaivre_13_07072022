@@ -1,8 +1,6 @@
 import axios from "axios"
 import { createSlice } from "@reduxjs/toolkit"
 
-import { selectUser } from "../../user/slices/user.slice"
-
 const initialState = {
   status: "void",
   data: null,
@@ -70,12 +68,7 @@ const accountsSlice = createSlice({
 export const selectAccounts = (state) => state.accounts
 
 export const fetchOrUpdateAccounts = async (dispatch, getState) => {
-  const user = selectUser(getState())
   const accounts = selectAccounts(getState())
-
-  if (user.jwt === undefined) {
-    return
-  }
 
   if (
     accounts.status === "pending" ||

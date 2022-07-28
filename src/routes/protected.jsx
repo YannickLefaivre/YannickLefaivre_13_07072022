@@ -11,9 +11,12 @@ import { selectUser } from "../features/user/slices/user.slice"
  */
 function ProtectedRoutes({ children }) {
   const location = useLocation()
-  const auth = useSelector(selectUser)
+  const user = useSelector(selectUser)
 
-  if (!auth.jwt) {
+  const userIsLogout =
+    localStorage.getItem("jwt") === null && user.jwt === undefined
+
+  if (userIsLogout) {
     return <Navigate to="/login" state={{ from: location }} replace />
   }
 

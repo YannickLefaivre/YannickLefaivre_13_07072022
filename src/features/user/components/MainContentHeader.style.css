@@ -25,23 +25,23 @@
 
 .input-wrappers-group {
   display: flex;
-  width: 100%;
   justify-content: space-evenly;
 }
 
 .buttons-wrapper {
   display: flex;
   flex-direction: row;
-  width: 48%;
+  width: 58%;
+  max-width: 200px;
   justify-content: space-between;
 }
 
 .input-edit-user-name-wrapper {
   width: 14rem;
+  margin-inline: 0.5rem;
 }
 
 .input-edit-user-name {
-  padding: 9px 14px;
   border-radius: 5px;
   border-color: #b8c4ce;
   color: #2c3e50;
@@ -55,10 +55,28 @@
   color: #6d61f6;
   font-weight: bold;
   font-size: 14px;
-  padding: 10px;
+  margin-inline: 0.5rem;
   display: flex;
   height: 2rem;
-  width: 7rem;
+  width: 100%;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 525px) {
+  .edit-user-name-form {
+    width: 100%;
+  }
+
+  .input-wrappers-group {
+    flex-wrap: wrap;
+  }
+
+  .buttons-wrapper {
+    width: auto;
+  }
+
+  .edit-user-name-form-button {
+    width: 5rem;
+  }
 }

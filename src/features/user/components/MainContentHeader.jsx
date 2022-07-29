@@ -1,9 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-
 import { selectUser, updateUserProfile } from "../slices/user.slice"
-
-import Form from "../../../component-library/Form/Form"
-
 import "./MainContentHeader.style.css"
 
 /**
@@ -76,10 +72,10 @@ function MaintContentHeader() {
         Edit Name
       </button>
 
-      <Form
+      <form
         id="edit-user-name-form"
         method="POST"
-        formStyleModifier="edit-user-name-form hidden-form"
+        className="edit-user-name-form hidden-form"
       >
         <div className="input-wrappers-group">
           <div className="input-wrapper input-edit-user-name-wrapper">
@@ -124,7 +120,7 @@ function MaintContentHeader() {
             Cancel
           </button>
         </div>
-      </Form>
+      </form>
     </header>
   )
 }

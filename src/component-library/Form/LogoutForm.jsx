@@ -1,10 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
-
 import * as userActions from "../../features/user/slices/user.slice"
-
-import Form from "./Form"
-
 import "./LogoutForm.style.css"
 
 function LogoutForm() {
@@ -22,17 +18,17 @@ function LogoutForm() {
   }
 
   return (
-    <Form
+    <form
       id="logout-form"
       method="POST"
-      handleSubmit={handleClickOnLogoutButton}
-      formStyleModifier="main-nav-item logout-form"
+      onSubmit={handleClickOnLogoutButton}
+      className="main-nav-item logout-form"
     >
       <button type="submit" className="logout-form-button">
         <i className="fa fa-sign-out logout-form-button-icon"></i>
         Sign Out
       </button>
-    </Form>
+    </form>
   )
 }
 

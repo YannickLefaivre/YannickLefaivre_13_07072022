@@ -17,11 +17,6 @@ import securityIcon from "../assets/icon-security.png"
 import "./Home.style.css"
 
 /**
- * Displays a home page with a header, a hero,
- * the presentation of the advantages provided by
- * the company's services and a footer with the
- * copyright.
- *
  * @returns {JSX.Element}
  */
 function Home() {

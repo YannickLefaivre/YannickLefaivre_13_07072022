@@ -6,7 +6,6 @@ import { Provider as ReduxStoreProvider } from "react-redux"
 import store from "../store/globalState"
 
 /**
- *
  * @param {React.ReactNode} children The application router
  *
  * @returns {JSX.Element}

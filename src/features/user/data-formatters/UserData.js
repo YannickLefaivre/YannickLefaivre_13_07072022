@@ -1,3 +1,7 @@
+/**
+ * Formatting class for data retrieved via the
+ * "POST /user/profile" route
+ */
 class UserData {
   /**
    * @typedef {Object} CivilInformation

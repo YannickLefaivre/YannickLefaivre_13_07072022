@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>features/landing/routes/Home.jsx - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="FormatString.html">FormatString</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="FormatString.html#.firstLetterToUpperCase">firstLetterToUpperCase</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="UserData.html">UserData</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#App">App</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#AppProvider">AppProvider</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#AppRoutes">AppRoutes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Error">Error</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#fetchOrUpdateUser">fetchOrUpdateUser</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Footer">Footer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Home">Home</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#initialState">initialState</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Loader">Loader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Login">Login</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#login">login</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#LogoutForm">LogoutForm</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#MaintContentHeader">MaintContentHeader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#NavigationBar">NavigationBar</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#NotFound">NotFound</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Profile">Profile</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#ProtectedRoutes">ProtectedRoutes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#selectUser">selectUser</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#signup">signup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#updateUserProfile">updateUserProfile</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">features/landing/routes/Home.jsx</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { Link } from "react-router-dom"
+import {
+  fetchOrUpdateUser,
+  selectUser,
+} from "../../user/slices/user.slice"
+import UserData from "../../user/data-formatters/UserData"
+import NavigationBar from "../../../component-library/Layout/NavigationBar"
+import Footer from "../../../component-library/Layout/Footer"
+import LogoutForm from "../../../component-library/Form/LogoutForm"
+import Loader from "../../../component-library/DataFetchingStateIndicator/Loader"
+import Error from "../../../component-library/DataFetchingStateIndicator/Error"
+import chatIcon from "../assets/icon-chat.png"
+import moneyIcon from "../assets/icon-money.png"
+import securityIcon from "../assets/icon-security.png"
+import "./Home.style.css"
+
+/**
+ * @returns {JSX.Element}
+ */
+function Home() {
+  let userData = {}
+
+  const dispatch = useDispatch()
+
+  const user = useSelector(selectUser)
+
+  const isLoading =
+    user.status === "pending" || user.status === "updating"
+
+  const jwt = localStorage.getItem("jwt")
+
+  useEffect(() => {
+    if (jwt) {
+      dispatch(fetchOrUpdateUser)
+    }
+  }, [dispatch, jwt])
+
+  if (user.data) {
+    userData = new UserData(user.data)
+  }
+
+  if (
+    user.status === "rejected" &amp;&amp;
+    user.passwordIsInvalid === false
+  ) {
+    return &lt;Error type="Erreur" />
+  }
+
+  document.title = "Argent Bank - Home"
+
+  return (
+    &lt;>
+      {isLoading ? (
+        &lt;Loader />
+      ) : (
+        &lt;>
+          &lt;NavigationBar appTitle="Argent Bank">
+            {user.data ? (
+              &lt;>
+                {userData &amp;&amp; (
+                  &lt;Link
+                    className="main-nav-item margin-right-0-3rem"
+                    to="/profile"
+                  >
+                    &lt;i className="fa fa-user-circle main-nav-item-icon">&lt;/i>
+                    {userData.firstName &amp;&amp; userData.firstName}
+                  &lt;/Link>
+                )}
+
+                &lt;LogoutForm />
+              &lt;/>
+            ) : (
+              &lt;Link className="main-nav-item" to="/login">
+                &lt;i className="fa fa-user-circle">&lt;/i> Sign In
+              &lt;/Link>
+            )}
+          &lt;/NavigationBar>
+          &lt;main>
+            &lt;div className="hero">
+              &lt;section className="hero-content">
+                &lt;h2 className="sr-only">Promoted Content&lt;/h2>
+                &lt;p className="subtitle">No fees.&lt;/p>
+                &lt;p className="subtitle">No minimum deposit.&lt;/p>
+                &lt;p className="subtitle">High interest rates.&lt;/p>
+                &lt;p className="text">
+                  Open a savings account with Argent Bank today!
+                &lt;/p>
+              &lt;/section>
+            &lt;/div>
+            &lt;section className="features">
+              &lt;h2 className="sr-only">Features&lt;/h2>
+              &lt;div className="feature-item">
+                &lt;img
+                  src={chatIcon}
+                  alt="Chat Icon"
+                  className="feature-icon"
+                />
+                &lt;h3 className="feature-item-title">
+                  You are our #1 priority
+                &lt;/h3>
+                &lt;p>
+                  Need to talk to a representative? You can get in
+                  touch through our 24/7 chat or through a phone call
+                  in less than 5 minutes.
+                &lt;/p>
+              &lt;/div>
+              &lt;div className="feature-item">
+                &lt;img
+                  src={moneyIcon}
+                  alt="Money Icon"
+                  className="feature-icon"
+                />
+                &lt;h3 className="feature-item-title">
+                  More savings means higher rates
+                &lt;/h3>
+                &lt;p>
+                  The more you save with us, the higher your interest
+                  rate will be!
+                &lt;/p>
+              &lt;/div>
+              &lt;div className="feature-item">
+                &lt;img
+                  src={securityIcon}
+                  alt="Security Icon"
+                  className="feature-icon"
+                />
+                &lt;h3 className="feature-item-title">
+                  Security you can trust
+                &lt;/h3>
+                &lt;p>
+                  We use top of the line encryption to make sure your
+                  data and money is always safe.
+                &lt;/p>
+              &lt;/div>
+            &lt;/section>
+          &lt;/main>
+          &lt;Footer />
+        &lt;/>
+      )}
+    &lt;/>
+  )
+}
+
+export default Home
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Sun Jul 31 2022 08:20:27 GMT-0400 (heure normale de l’Amazonie) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>features/user/components/MainContentHeader.jsx - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="FormatString.html">FormatString</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="FormatString.html#.firstLetterToUpperCase">firstLetterToUpperCase</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="UserData.html">UserData</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#App">App</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#AppProvider">AppProvider</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#AppRoutes">AppRoutes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Error">Error</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#fetchOrUpdateUser">fetchOrUpdateUser</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Footer">Footer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Home">Home</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#initialState">initialState</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Loader">Loader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Login">Login</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#login">login</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#LogoutForm">LogoutForm</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#MaintContentHeader">MaintContentHeader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#NavigationBar">NavigationBar</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#NotFound">NotFound</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Profile">Profile</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#ProtectedRoutes">ProtectedRoutes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#selectUser">selectUser</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#signup">signup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#updateUserProfile">updateUserProfile</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">features/user/components/MainContentHeader.jsx</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useDispatch, useSelector } from "react-redux"
+import { selectUser, updateUserProfile } from "../slices/user.slice"
+import "./MainContentHeader.style.css"
+
+/**
+ * @returns {JSX.Element}
+ */
+function MaintContentHeader() {
+  const dispatch = useDispatch()
+  const user = useSelector(selectUser)
+
+  /**
+   * @param {Boolean} editModeEnabled
+   */
+  const toggleUserNameEditMode = (editModeEnabled) => {
+    const userNameText = document.getElementById("user-name")
+    const editButton = document.getElementById("edit-button")
+    const editUserNameForm = document.getElementById(
+      "edit-user-name-form"
+    )
+
+    if (editModeEnabled) {
+      userNameText.classList.add("hide")
+      editButton.classList.add("hide")
+      editUserNameForm.classList.remove("hidden-form")
+    } else {
+      editUserNameForm.classList.add("hidden-form")
+      userNameText.classList.remove("hide")
+      editButton.classList.remove("hide")
+    }
+  }
+
+  /**
+   * @param {MouseEvent} event
+   *
+   * @returns {VoidFunction}
+   */
+  const handleUserNameEditing = (event) => {
+    event.preventDefault()
+
+    let newFirstName = document.getElementById("first-name").value
+    let newLastName = document.getElementById("last-name").value
+
+    if (!newFirstName) {
+      newFirstName = user.data.firstName
+    }
+
+    if (!newLastName) {
+      newLastName = user.data.lastName
+    }
+
+    dispatch(updateUserProfile(newFirstName, newLastName))
+
+    toggleUserNameEditMode(false)
+  }
+
+  return (
+    &lt;header className="header">
+      &lt;h1>
+        Welcome back
+        &lt;br />
+        &lt;span id="user-name">{`${user.data &amp;&amp; user.data.firstName} ${
+          user.data &amp;&amp; user.data.lastName
+        } !`}&lt;/span>
+      &lt;/h1>
+
+      &lt;button
+        id="edit-button"
+        className="edit-button"
+        onClick={() => toggleUserNameEditMode(true)}
+      >
+        Edit Name
+      &lt;/button>
+
+      &lt;form
+        id="edit-user-name-form"
+        method="POST"
+        className="edit-user-name-form hidden-form"
+      >
+        &lt;div className="input-wrappers-group">
+          &lt;div className="input-wrapper input-edit-user-name-wrapper">
+            &lt;label htmlFor="first-name" className="sr-only">&lt;/label>
+            &lt;input
+              type="text"
+              id="first-name"
+              name="first-name"
+              className="input-edit-user-name"
+              placeholder={user.data &amp;&amp; user.data.firstName}
+            />
+          &lt;/div>
+
+          &lt;div className="input-wrapper input-edit-user-name-wrapper">
+            &lt;label htmlFor="last-name" className="sr-only">
+              Last name
+            &lt;/label>
+            &lt;input
+              type="text"
+              id="last-name"
+              name="last-name"
+              className="input-edit-user-name"
+              placeholder={user.data &amp;&amp; user.data.lastName}
+            />
+          &lt;/div>
+        &lt;/div>
+
+        &lt;div className="buttons-wrapper">
+          &lt;button
+            type="submit"
+            className="edit-user-name-form-button"
+            onClick={handleUserNameEditing}
+          >
+            Save
+          &lt;/button>
+
+          &lt;button
+            type="reset"
+            className="edit-user-name-form-button"
+            onClick={() => toggleUserNameEditMode(false)}
+          >
+            Cancel
+          &lt;/button>
+        &lt;/div>
+      &lt;/form>
+    &lt;/header>
+  )
+}
+
+export default MaintContentHeader
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Sun Jul 31 2022 08:20:27 GMT-0400 (heure normale de l’Amazonie) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

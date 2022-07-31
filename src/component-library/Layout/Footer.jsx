@@ -1,5 +1,8 @@
 import "./Footer.style.css"
 
+/**
+ * @returns {JSX.Element}
+ */
 function Footer() {
   return (
     <footer className="footer">

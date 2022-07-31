@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>features/user/routes/Profile.jsx - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="FormatString.html">FormatString</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="FormatString.html#.firstLetterToUpperCase">firstLetterToUpperCase</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="UserData.html">UserData</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#App">App</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#AppProvider">AppProvider</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#AppRoutes">AppRoutes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Error">Error</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#fetchOrUpdateUser">fetchOrUpdateUser</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Footer">Footer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Home">Home</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#initialState">initialState</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Loader">Loader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Login">Login</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#login">login</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#LogoutForm">LogoutForm</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#MaintContentHeader">MaintContentHeader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#NavigationBar">NavigationBar</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#NotFound">NotFound</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Profile">Profile</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#ProtectedRoutes">ProtectedRoutes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#selectUser">selectUser</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#signup">signup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#updateUserProfile">updateUserProfile</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">features/user/routes/Profile.jsx</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useEffect } from "react"
+import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchOrUpdateUser, selectUser } from "../slices/user.slice"
+import UserData from "../data-formatters/UserData"
+import NavigationBar from "../../../component-library/Layout/NavigationBar"
+import Footer from "../../../component-library/Layout/Footer"
+import LogoutForm from "../../../component-library/Form/LogoutForm"
+import Loader from "../../../component-library/DataFetchingStateIndicator/Loader"
+import Error from "../../../component-library/DataFetchingStateIndicator/Error"
+import MaintContentHeader from "../components/MainContentHeader"
+import "./Profile.style.css"
+
+/**
+ * @returns {JSX.Element}
+ */
+function Profile() {
+  let userData = {}
+
+  const dispatch = useDispatch()
+  const user = useSelector(selectUser)
+
+  const isLoading =
+    user.status === "pending" || user.status === "updating"
+
+  if (user.data) {
+    userData = new UserData(user.data)
+  }
+
+  useEffect(() => {
+    dispatch(fetchOrUpdateUser)
+  }, [dispatch])
+
+  document.title = `Argent Bank - Profile Page`
+
+  if (user.status === "rejected") {
+    return &lt;Error type="Erreur" />
+  }
+
+  return (
+    &lt;>
+      {isLoading ? (
+        &lt;Loader />
+      ) : (
+        &lt;>
+          &lt;NavigationBar appTitle="Argent Bank">
+            {user.data ? (
+              &lt;>
+                {userData &amp;&amp; (
+                  &lt;Link
+                    className="main-nav-item margin-right-0-3rem"
+                    to="/profile"
+                  >
+                    &lt;i className="fa fa-user-circle main-nav-item-icon">&lt;/i>
+                    {userData.firstName &amp;&amp; userData.firstName}
+                  &lt;/Link>
+                )}
+
+                &lt;LogoutForm />
+              &lt;/>
+            ) : (
+              &lt;Link className="main-nav-item" to="/login">
+                &lt;i className="fa fa-user-circle">&lt;/i> Sign In
+              &lt;/Link>
+            )}
+          &lt;/NavigationBar>
+          &lt;main className="main bg-dark">
+            &lt;MaintContentHeader />
+            &lt;h2 className="sr-only">Accounts&lt;/h2>
+            &lt;section className="account">
+              &lt;div className="account-content-wrapper">
+                &lt;h3 className="account-title">
+                  Argent Bank Checking (x8349)
+                &lt;/h3>
+                &lt;p className="account-amount">$2,082.79&lt;/p>
+                &lt;p className="account-amount-description">
+                  Available Balance
+                &lt;/p>
+              &lt;/div>
+              &lt;div className="account-content-wrapper cta">
+                &lt;button className="transaction-button">
+                  View transactions
+                &lt;/button>
+              &lt;/div>
+            &lt;/section>
+            &lt;section className="account">
+              &lt;div className="account-content-wrapper">
+                &lt;h3 className="account-title">
+                  Argent Bank Savings (x6712)
+                &lt;/h3>
+                &lt;p className="account-amount">$10,928.42&lt;/p>
+                &lt;p className="account-amount-description">
+                  Available Balance
+                &lt;/p>
+              &lt;/div>
+              &lt;div className="account-content-wrapper cta">
+                &lt;button className="transaction-button">
+                  View transactions
+                &lt;/button>
+              &lt;/div>
+            &lt;/section>
+            &lt;section className="account">
+              &lt;div className="account-content-wrapper">
+                &lt;h3 className="account-title">
+                  Argent Bank Credit Card (x8349)
+                &lt;/h3>
+                &lt;p className="account-amount">$184.30&lt;/p>
+                &lt;p className="account-amount-description">
+                  Current Balance
+                &lt;/p>
+              &lt;/div>
+              &lt;div className="account-content-wrapper cta">
+                &lt;button className="transaction-button">
+                  View transactions
+                &lt;/button>
+              &lt;/div>
+            &lt;/section>
+          &lt;/main>
+          &lt;Footer />
+        &lt;/>
+      )}
+    &lt;/>
+  )
+}
+
+export default Profile
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Sun Jul 31 2022 08:20:27 GMT-0400 (heure normale de l’Amazonie) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

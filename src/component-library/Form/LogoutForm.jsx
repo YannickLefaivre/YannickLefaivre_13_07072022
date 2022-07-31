@@ -3,6 +3,9 @@ import { useDispatch } from "react-redux"
 import * as userActions from "../../features/user/slices/user.slice"
 import "./LogoutForm.style.css"
 
+/**
+ * @returns {JSX.Element}
+ */
 function LogoutForm() {
   const dispatch = useDispatch()
   const navigate = useNavigate()

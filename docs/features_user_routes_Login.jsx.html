@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>features/user/routes/Login.jsx - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="FormatString.html">FormatString</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="FormatString.html#.firstLetterToUpperCase">firstLetterToUpperCase</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="UserData.html">UserData</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#App">App</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#AppProvider">AppProvider</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#AppRoutes">AppRoutes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Error">Error</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#fetchOrUpdateUser">fetchOrUpdateUser</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Footer">Footer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Home">Home</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#initialState">initialState</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Loader">Loader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Login">Login</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#login">login</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#LogoutForm">LogoutForm</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#MaintContentHeader">MaintContentHeader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#NavigationBar">NavigationBar</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#NotFound">NotFound</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#Profile">Profile</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#ProtectedRoutes">ProtectedRoutes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#selectUser">selectUser</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#signup">signup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#updateUserProfile">updateUserProfile</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">features/user/routes/Login.jsx</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import FormatString from "../../../utils/FormatString"
+import NavigationBar from "../../../component-library/Layout/NavigationBar"
+import Footer from "../../../component-library/Layout/Footer"
+import { login, selectUser } from "../slices/user.slice"
+import "./Login.style.css"
+
+/**
+ * @returns {JSX.Element}
+ */
+function Login() {
+  const dispatch = useDispatch()
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const user = useSelector(selectUser)
+
+  /**
+   * @param {SubmitEvent} event
+   * @param {import("@reduxjs/toolkit").Dispatch} dispatch
+   * @param {import("react-router-dom").NavigateFunction} navigate
+   * @param {import("react-router-dom").Location} location
+   *
+   * @returns {VoidFunction}
+   */
+  const handleSubmit = (event, dispatch, navigate, location) => {
+    event.preventDefault()
+
+    const pathname = location.state?.from?.pathname
+
+    const previousLocation =
+      pathname === "/profile" ? pathname : "/profile"
+
+    const email = document.getElementById("username").value
+    const password = document.getElementById("password").value
+    const rememberMeOption = document.getElementById("remember-me")
+
+    const getFirstName = () => email.split("@")[0]
+    const getLastName = () => email.split("@")[1].split(".")[0]
+
+    const keepUserLoggedIn =
+      rememberMeOption.checked === true || false
+
+    const user = {
+      email,
+      password,
+      firstName: FormatString.firstLetterToUpperCase(getFirstName()),
+      lastName: FormatString.firstLetterToUpperCase(getLastName()),
+    }
+
+    dispatch(
+      login(user, { navigate, previousLocation }, keepUserLoggedIn)
+    )
+
+    return
+  }
+
+  document.title = "Argent Bank - Login Page"
+
+  return (
+    &lt;>
+      &lt;NavigationBar appTitle="Argent Bank">
+        &lt;Link className="main-nav-item" to="/login">
+          &lt;i className="fa fa-user-circle">&lt;/i> Sign In
+        &lt;/Link>
+      &lt;/NavigationBar>
+      &lt;main className="main bg-dark">
+        &lt;section className="sign-in-content">
+          &lt;i className="fa fa-user-circle sign-in-icon">&lt;/i>
+          &lt;h1>Sign In&lt;/h1>
+          &lt;form
+            id="sign-in-form"
+            method="POST"
+            onSubmit={(event) =>
+              handleSubmit(event, dispatch, navigate, location)
+            }
+          >
+            &lt;div className="input-wrapper">
+              &lt;label htmlFor="username">Username&lt;/label>
+              &lt;input
+                type="email"
+                id="username"
+                name="username"
+                required
+              />
+              &lt;p
+                id="username-error-message"
+                className="error-message hide"
+              >&lt;/p>
+            &lt;/div>
+            &lt;div className="input-wrapper">
+              &lt;label htmlFor="password">Password&lt;/label>
+              &lt;input
+                type="password"
+                id="password"
+                name="password"
+                required
+              />
+              &lt;p
+                id="password-error-message"
+                className={`error-message${
+                  user.passwordIsInvalid ? "" : " hide"
+                }`}
+              >
+                {user.passwordIsInvalid
+                  ? "Le mot de passe que vous avez renseigné ne correspond pas au nom d'utilisateur entrer."
+                  : ""}
+              &lt;/p>
+            &lt;/div>
+            &lt;div className="input-remember">
+              &lt;input type="checkbox" id="remember-me" />
+              &lt;label htmlFor="remember-me">Remember me&lt;/label>
+            &lt;/div>
+            &lt;button type="submit" className="sign-in-button">
+              Sign In
+            &lt;/button>
+          &lt;/form>
+        &lt;/section>
+      &lt;/main>
+
+      &lt;Footer />
+    &lt;/>
+  )
+}
+
+export default Login
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Sun Jul 31 2022 08:20:27 GMT-0400 (heure normale de l’Amazonie) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

@@ -11,6 +11,9 @@ import Error from "../../../component-library/DataFetchingStateIndicator/Error"
 import MaintContentHeader from "../components/MainContentHeader"
 import "./Profile.style.css"
 
+/**
+ * @returns {JSX.Element}
+ */
 function Profile() {
   let userData = {}
 

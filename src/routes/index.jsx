@@ -5,6 +5,9 @@ import Profile from "../features/user/routes/Profile"
 import NotFound from "../features/notfound/routes/NotFound"
 import ProtectedRoutes from "./protected"
 
+/**
+ * @returns {JSX.Element}
+ */
 function AppRoutes() {
   return (
     <Routes>

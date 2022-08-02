@@ -13,6 +13,7 @@ import { API_BASE_URL } from "../../../config"
  * @property {any} data
  * @property {any} error
  * @property {Boolean} passwordIsInvalid
+ * @property {String} invaliUsernameErrorMessage
  */
 
 /**
@@ -40,6 +41,7 @@ const initialState = {
   data: null,
   error: null,
   passwordIsInvalid: false,
+  invaliUsernameErrorMessage: "",
 }
 
 const userSlice = createSlice({
@@ -101,6 +103,14 @@ const userSlice = createSlice({
         }
       },
     },
+    usernameInvalid: {
+      prepare: (errorMessage) => {
+        return { payload: errorMessage }
+      },
+      reducer: (draft, action) => {
+        draft.invaliUsernameErrorMessage = action.payload
+      },
+    },
     passwordIsInvalid: {
       prepare: (isUserPasswordValid) => {
         return { payload: isUserPasswordValid }
@@ -112,6 +122,7 @@ const userSlice = createSlice({
     signout: (draft, action) => {
       draft.data = null
       draft.passwordIsInvalid = false
+      draft.invaliUsernameErrorMessage = ""
 
       if (draft.jwt) {
         draft.jwt = null
@@ -178,7 +189,11 @@ export const login = (
       const { message } = error.response.data
 
       if (message.toLowerCase().includes("user not found")) {
-        dispatch(signup(registeredUser, navigationUtilities))
+        dispatch(
+          userSlice.actions.usernameInvalid(
+            "Sorry but your username is not registered in our systems"
+          )
+        )
       }
 
       if (message.toLowerCase().includes("password is invalid")) {
@@ -188,36 +203,6 @@ export const login = (
 
         dispatch(userSlice.actions.rejected(error.response.data))
       }
-    }
-  }
-}
-
-/**
- * @function
- *
- * @param {User} newUser
- * @param {NavigationUtilities} navigationUtilities
- *
- * @returns An asynchronous action
- */
-export const signup = (newUser, navigationUtilities) => {
-  return async (dispatch, getState) => {
-    dispatch(userSlice.actions.fetching())
-
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}user/signup`,
-        newUser
-      )
-      const data = response.data
-
-      dispatch(userSlice.actions.resolved(data))
-
-      dispatch(login(newUser, navigationUtilities))
-    } catch (error) {
-      console.log(error)
-
-      dispatch(userSlice.actions.rejected(error.response.data))
     }
   }
 }

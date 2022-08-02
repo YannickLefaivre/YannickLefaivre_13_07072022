@@ -45,8 +45,6 @@ function Login() {
     const user = {
       email,
       password,
-      firstName: FormatString.firstLetterToUpperCase(getFirstName()),
-      lastName: FormatString.firstLetterToUpperCase(getLastName()),
     }
 
     dispatch(
@@ -69,6 +67,9 @@ function Login() {
         <section className="sign-in-content">
           <i className="fa fa-user-circle sign-in-icon"></i>
           <h1>Sign In</h1>
+          {user.invaliUsernameErrorMessage && (
+            <p>{user.invaliUsernameErrorMessage}</p>
+          )}
           <form
             id="sign-in-form"
             method="POST"

@@ -19,3 +19,14 @@
   display: flex;
   align-items: center;
 }
+
+@media (max-width: 450px) {
+  .main-nav {
+    flex-direction: column;
+    padding-bottom: 10px;
+  }
+
+  .main-nav-item-container {
+    margin: 10px;
+  }
+}

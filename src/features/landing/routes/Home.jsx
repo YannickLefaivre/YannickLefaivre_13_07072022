@@ -43,8 +43,9 @@ function Home() {
 
   if (
     user.status === "rejected" &&
+    user.invaliUsernameErrorMessage === "" &&
     user.passwordIsInvalid === false &&
-    user.couldNotRecoverTheData === false
+    user.couldNotRecoverTheData === ""
   ) {
     return <Error type="Erreur" />
   }

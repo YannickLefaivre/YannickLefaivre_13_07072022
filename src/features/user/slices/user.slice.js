@@ -186,6 +186,14 @@ export const login = (
         dispatch(userSlice.actions.passwordIsInvalid(false))
       }
 
+      if (user.couldNotRecoverTheData) {
+        dispatch(userSlice.actions.backendUnavailable(""))
+      }
+
+      if (user.invaliUsernameErrorMessage) {
+        dispatch(userSlice.actions.usernameInvalid(""))
+      }
+
       if (keepUserLoggedIn) {
         localStorage.setItem("jwt", data.body.token)
       }
@@ -206,6 +214,14 @@ export const login = (
           )
         )
 
+        if (user.invaliUsernameErrorMessage) {
+          dispatch(userSlice.actions.usernameInvalid(""))
+        }
+
+        if (user.passwordIsInvalid) {
+          dispatch(userSlice.actions.passwordIsInvalid(false))
+        }
+
         dispatch(userSlice.actions.rejected(message))
       }
 
@@ -216,6 +232,10 @@ export const login = (
           )
         )
 
+        if (user.couldNotRecoverTheData) {
+          dispatch(userSlice.actions.backendUnavailable(""))
+        }
+
         dispatch(userSlice.actions.rejected(error.response.data))
       }
 
@@ -223,6 +243,10 @@ export const login = (
         localStorage.removeItem("jwt")
 
         dispatch(userSlice.actions.passwordIsInvalid(true))
+
+        if (user.couldNotRecoverTheData) {
+          dispatch(userSlice.actions.backendUnavailable(""))
+        }
 
         dispatch(userSlice.actions.rejected(error.response.data))
       }

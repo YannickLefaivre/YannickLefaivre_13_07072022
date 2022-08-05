@@ -67,9 +67,12 @@ function Login() {
         <section className="sign-in-content">
           <i className="fa fa-user-circle sign-in-icon"></i>
           <h1>Sign In</h1>
-          {user.invaliUsernameErrorMessage && (
+          {(user.invaliUsernameErrorMessage && (
             <p>{user.invaliUsernameErrorMessage}</p>
-          )}
+          )) ||
+            (user.couldNotRecoverTheData && (
+              <p>{user.couldNotRecoverTheData}</p>
+            ))}
           <form
             id="sign-in-form"
             method="POST"

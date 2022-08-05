@@ -14,6 +14,7 @@ import { API_BASE_URL } from "../../../config"
  * @property {any} error
  * @property {Boolean} passwordIsInvalid
  * @property {String} invaliUsernameErrorMessage
+ * @property {String} couldNotRecoverTheData
  */
 
 /**
@@ -42,6 +43,7 @@ const initialState = {
   error: null,
   passwordIsInvalid: false,
   invaliUsernameErrorMessage: "",
+  couldNotRecoverTheData: "",
 }
 
 const userSlice = createSlice({
@@ -103,6 +105,14 @@ const userSlice = createSlice({
         }
       },
     },
+    backendUnavailable: {
+      prepare: (errorMessage) => {
+        return { payload: errorMessage }
+      },
+      reducer: (draft, action) => {
+        draft.couldNotRecoverTheData = action.payload
+      },
+    },
     usernameInvalid: {
       prepare: (errorMessage) => {
         return { payload: errorMessage }
@@ -123,6 +133,7 @@ const userSlice = createSlice({
       draft.data = null
       draft.passwordIsInvalid = false
       draft.invaliUsernameErrorMessage = ""
+      draft.couldNotRecoverTheData = ""
 
       if (draft.jwt) {
         draft.jwt = null
@@ -186,7 +197,17 @@ export const login = (
         { replace: true }
       )
     } catch (error) {
-      const { message } = error.response.data
+      const { message } = error.response.data ?? error
+
+      if (message.toLowerCase().includes("network error")) {
+        dispatch(
+          userSlice.actions.backendUnavailable(
+            "Sorry but we had an error with our systems, try logging in later."
+          )
+        )
+
+        dispatch(userSlice.actions.rejected(message))
+      }
 
       if (message.toLowerCase().includes("user not found")) {
         dispatch(
@@ -194,6 +215,8 @@ export const login = (
             "Sorry but your username is not registered in our systems"
           )
         )
+
+        dispatch(userSlice.actions.rejected(error.response.data))
       }
 
       if (message.toLowerCase().includes("password is invalid")) {
